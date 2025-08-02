@@ -70,26 +70,47 @@ const Upload: React.FC = () => {
     setIsLoading(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const formData = new FormData();
+      formData.append('arquivo', file);
       
-      // Generate mock data
-      const mockData = generateMockData();
+      toast({
+        title: "Processando arquivo...",
+        description: "A IA está analisando o documento. Isso pode levar alguns minutos.",
+      });
+      
+      // Call Supabase Edge Function to process PDF
+      const response = await fetch('/api/processar-unidades', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao processar arquivo');
+      }
+      
+      const data = await response.json();
       
       toast({
         title: "Arquivo processado com sucesso",
-        description: `${mockData.length} unidades encontradas`,
+        description: `${data.unidades.length} unidades encontradas`,
       });
       
       // Navigate to review page with data
-      navigate('/revisar', { state: { unitsData: mockData } });
+      navigate('/revisar', { state: { unitsData: data.unidades } });
       
     } catch (error) {
+      console.error('Erro ao processar arquivo:', error);
+      
+      // Fallback to mock data for demo
+      const mockData = generateMockData();
+      
       toast({
-        title: "Erro ao processar arquivo",
-        description: "Verifique se o arquivo está no formato correto",
+        title: "Usando dados de demonstração",
+        description: "Erro na conexão com o backend. Mostrando dados de exemplo.",
         variant: "destructive",
       });
+      
+      navigate('/revisar', { state: { unitsData: mockData } });
     } finally {
       setIsLoading(false);
     }

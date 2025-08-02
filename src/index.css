@@ -18,7 +18,7 @@
     --error: 0 84% 60%;                      /* #ef4444 - Vermelho para críticas */
     
     /* Semantic tokens */
-    --background: var(--condoconta-background);
+    --background: 0 0% 100%;
     --foreground: var(--condoconta-text);
     
     --card: 0 0% 100%;

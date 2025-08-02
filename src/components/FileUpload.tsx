@@ -45,7 +45,18 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading = false
         
         <div className="flex flex-col items-center space-y-4">
           {isLoading ? (
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <div className="flex flex-col items-center space-y-3">
+              <div className="relative">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 bg-primary rounded-full animate-pulse"></div>
+                </div>
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-medium text-primary">IA processando documento...</p>
+                <p className="text-xs text-muted-foreground">Isso pode levar alguns minutos</p>
+              </div>
+            </div>
           ) : (
             <Upload className="h-12 w-12 text-muted-foreground" />
           )}

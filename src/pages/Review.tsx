@@ -45,8 +45,17 @@ const Review: React.FC = () => {
     setIsLoading(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await fetch('/api/cadastrar-unidades', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ unidades: unitsData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao cadastrar unidades');
+      }
       
       toast({
         title: "Unidades cadastradas com sucesso",
@@ -67,6 +76,7 @@ const Review: React.FC = () => {
   };
 
   const statusCounts = getStatusCounts();
+  const hasCriticalIssues = statusCounts.critical > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -142,14 +152,21 @@ const Review: React.FC = () => {
 
         {/* Action Button */}
         <div className="mt-8 text-center">
-          <Button 
-            size="lg" 
-            onClick={handleRegisterUnits}
-            disabled={isLoading || unitsData.length === 0}
-            className="condoconta-button-primary min-w-64"
-          >
-            {isLoading ? 'Cadastrando...' : 'Cadastrar Unidades'}
-          </Button>
+          <div className="space-y-2">
+            {hasCriticalIssues && (
+              <p className="text-sm text-red-600 text-center">
+                ⚠️ Não é possível cadastrar enquanto houver unidades com dados críticos faltando
+              </p>
+            )}
+            <Button 
+              size="lg" 
+              onClick={handleRegisterUnits}
+              disabled={isLoading || unitsData.length === 0 || hasCriticalIssues}
+              className="condoconta-button-primary min-w-64"
+            >
+              {isLoading ? 'Cadastrando...' : 'Cadastrar Unidades'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
