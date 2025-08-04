@@ -117,36 +117,84 @@ const Upload: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto text-center">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-primary mb-4">
-              Cadastro de Unidades Condominiais
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Arraste ou selecione um arquivo (PDF ou CSV) contendo as unidades do condomínio para revisão.
-            </p>
+    <div className="p-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-xl mb-6">
+            <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
           </div>
+          <h1 className="text-3xl font-bold text-foreground mb-4">
+            Upload de Documentos
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Envie documentos PDF ou CSV contendo informações das unidades condominiais. 
+            Nossa IA processará automaticamente os dados para validação.
+          </p>
+        </div>
 
-          {/* File Upload */}
-          <div className="mb-8">
+        {/* Upload Card */}
+        <div className="condoconta-card max-w-2xl mx-auto mb-8">
+          <div className="p-8">
             <FileUpload onFileSelect={handleFileSelect} isLoading={isLoading} />
           </div>
+        </div>
 
-          {/* Demo Button */}
-          <div className="border-t border-border pt-8">
-            <p className="text-sm text-muted-foreground mb-4">
-              Para demonstração, você pode usar dados de exemplo:
+        {/* Demo Section */}
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center space-x-2 text-sm text-muted-foreground mb-4">
+            <div className="w-8 h-px bg-border"></div>
+            <span>Para demonstração</span>
+            <div className="w-8 h-px bg-border"></div>
+          </div>
+          <Button 
+            variant="outline" 
+            onClick={() => handleFileSelect(new File([], 'demo.csv'))}
+            disabled={isLoading}
+            className="px-6"
+          >
+            Usar Dados de Exemplo
+          </Button>
+        </div>
+
+        {/* Info Cards */}
+        <div className="grid md:grid-cols-3 gap-6 mt-12">
+          <div className="text-center p-6">
+            <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-foreground mb-2">Processamento IA</h3>
+            <p className="text-sm text-muted-foreground">
+              Extração inteligente de dados usando modelos avançados de IA
             </p>
-            <Button 
-              variant="outline" 
-              onClick={() => handleFileSelect(new File([], 'demo.csv'))}
-              disabled={isLoading}
-            >
-              Usar Dados de Exemplo
-            </Button>
+          </div>
+          
+          <div className="text-center p-6">
+            <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-foreground mb-2">Validação Automática</h3>
+            <p className="text-sm text-muted-foreground">
+              Verificação de campos obrigatórios e consistência dos dados
+            </p>
+          </div>
+          
+          <div className="text-center p-6">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-foreground mb-2">Export CSV</h3>
+            <p className="text-sm text-muted-foreground">
+              Geração de arquivo CSV validado para importação final
+            </p>
           </div>
         </div>
       </div>

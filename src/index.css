@@ -7,10 +7,11 @@
 @layer base {
   :root {
     /* CondoConta Brand Colors */
-    --condoconta-primary: 210 100% 25%;      /* #003f7d - Azul escuro CondoConta */
+    --condoconta-primary: 220 90% 56%;       /* #3b82f6 - Azul CondoConta */
     --condoconta-secondary: 47 100% 61%;     /* #ffd23c - Amarelo CondoConta */
-    --condoconta-background: 218 100% 97%;   /* #f7f9fc - Fundo claro */
-    --condoconta-text: 0 0% 10%;             /* #1a1a1a - Texto escuro */
+    --condoconta-dark: 222 84% 4.9%;        /* #0a0a0a - Escuro */
+    --condoconta-sidebar: 220 13% 9%;        /* #171717 - Sidebar escura */
+    --condoconta-sidebar-accent: 220 13% 14%; /* #262626 - Accent sidebar */
     
     /* Status Colors */
     --success: 142 76% 47%;                  /* #22c55e - Verde para completas */
@@ -19,25 +20,25 @@
     
     /* Semantic tokens */
     --background: 0 0% 100%;
-    --foreground: var(--condoconta-text);
+    --foreground: var(--condoconta-dark);
     
     --card: 0 0% 100%;
-    --card-foreground: var(--condoconta-text);
+    --card-foreground: var(--condoconta-dark);
     
     --popover: 0 0% 100%;
-    --popover-foreground: var(--condoconta-text);
+    --popover-foreground: var(--condoconta-dark);
     
     --primary: var(--condoconta-primary);
     --primary-foreground: 0 0% 98%;
     
-    --secondary: var(--condoconta-secondary);
-    --secondary-foreground: var(--condoconta-text);
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: var(--condoconta-dark);
     
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
     
-    --accent: var(--condoconta-secondary);
-    --accent-foreground: var(--condoconta-text);
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: var(--condoconta-dark);
     
     --destructive: var(--error);
     --destructive-foreground: 0 0% 98%;
@@ -48,21 +49,15 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar específica - escura */
+    --sidebar-background: var(--condoconta-sidebar);
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: var(--condoconta-primary);
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: var(--condoconta-sidebar-accent);
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: var(--condoconta-sidebar-accent);
+    --sidebar-ring: var(--condoconta-primary);
   }
 
   .dark {
