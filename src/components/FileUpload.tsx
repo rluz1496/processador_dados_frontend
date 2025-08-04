@@ -36,58 +36,111 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading = false
   });
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full">
       <div
         {...getRootProps()}
-        className={`upload-zone ${isDragActive ? 'dragover' : ''} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`
+          relative overflow-hidden rounded-xl border-2 border-dashed transition-all duration-300
+          ${isDragActive 
+            ? 'border-primary bg-primary/5 scale-105' 
+            : 'border-border hover:border-primary/50'
+          }
+          ${isLoading ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer hover:bg-muted/20'}
+          p-12 text-center group
+        `}
       >
         <input {...getInputProps()} />
         
-        <div className="flex flex-col items-center space-y-4">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--primary)) 1px, transparent 0)`,
+            backgroundSize: '20px 20px'
+          }}></div>
+        </div>
+        
+        <div className="relative z-10 flex flex-col items-center space-y-6">
           {isLoading ? (
-            <div className="flex flex-col items-center space-y-3">
+            <div className="flex flex-col items-center space-y-4">
+              {/* Custom Loading Animation */}
               <div className="relative">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-8 h-8 bg-primary rounded-full animate-pulse"></div>
-                </div>
+                <div className="w-16 h-16 border-4 border-primary/20 rounded-full"></div>
+                <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
+                <div className="absolute inset-2 w-12 h-12 border-4 border-transparent border-r-primary/60 rounded-full animate-spin animation-delay-150"></div>
               </div>
-              <div className="text-center">
-                <p className="text-sm font-medium text-primary">IA processando documento...</p>
-                <p className="text-xs text-muted-foreground">Isso pode levar alguns minutos</p>
+              <div className="text-center max-w-sm">
+                <h3 className="text-lg font-semibold text-primary mb-2">
+                  IA Processando Documento
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Extraindo informações das unidades condominiais...
+                </p>
+                <div className="mt-3 flex justify-center space-x-1">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-100"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-200"></div>
+                </div>
               </div>
             </div>
           ) : (
-            <Upload className="h-12 w-12 text-muted-foreground" />
+            <>
+              {/* Upload Icon */}
+              <div className="relative">
+                <div className={`
+                  w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300
+                  ${isDragActive 
+                    ? 'bg-primary text-primary-foreground scale-110' 
+                    : 'bg-primary/10 text-primary group-hover:bg-primary/20'
+                  }
+                `}>
+                  <Upload className="h-10 w-10" />
+                </div>
+                {isDragActive && (
+                  <div className="absolute inset-0 w-20 h-20 rounded-full border-4 border-primary animate-ping"></div>
+                )}
+              </div>
+              
+              {/* Content */}
+              <div className="text-center max-w-md">
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  {isDragActive ? 'Solte o arquivo aqui' : 'Envie seu documento'}
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  Arraste e solte um arquivo PDF ou CSV, ou clique para selecionar
+                </p>
+                
+                <Button 
+                  variant="outline" 
+                  disabled={isLoading}
+                  className="group-hover:border-primary group-hover:text-primary transition-colors"
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Selecionar Arquivo
+                </Button>
+              </div>
+            </>
           )}
-          
-          <div className="text-center">
-            <p className="text-lg font-medium text-foreground mb-2">
-              {isDragActive ? 'Solte o arquivo aqui' : 'Arraste o arquivo aqui'}
-            </p>
-            <p className="text-sm text-muted-foreground mb-4">
-              ou clique para selecionar
-            </p>
-            <Button variant="outline" disabled={isLoading}>
-              <FileText className="h-4 w-4 mr-2" />
-              Selecionar Arquivo
-            </Button>
-          </div>
         </div>
       </div>
 
       {error && (
-        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md flex items-center">
-          <AlertCircle className="h-4 w-4 text-red-500 mr-2" />
-          <span className="text-sm text-red-600">{error}</span>
+        <div className="mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg flex items-start space-x-3">
+          <AlertCircle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-destructive">Erro no arquivo</p>
+            <p className="text-sm text-destructive/80">{error}</p>
+          </div>
         </div>
       )}
 
-      <div className="mt-4 text-center">
-        <p className="text-xs text-muted-foreground">
-          Arquivos suportados: CSV ou PDF<br />
-          Colunas necessárias: Unidade, Bloco, Nome, CPF/CNPJ, Celular, Telefone, E-mail
-        </p>
+      {/* Requirements */}
+      <div className="mt-6 p-4 bg-muted/50 rounded-lg border">
+        <h4 className="text-sm font-medium text-foreground mb-2">Requisitos do arquivo:</h4>
+        <ul className="text-xs text-muted-foreground space-y-1">
+          <li>• <strong>Formatos:</strong> PDF ou CSV</li>
+          <li>• <strong>Campos obrigatórios:</strong> Unidade, Nome, CPF/CNPJ</li>
+          <li>• <strong>Campos opcionais:</strong> Bloco, Celular, Telefone, E-mail</li>
+        </ul>
       </div>
     </div>
   );
