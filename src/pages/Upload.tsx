@@ -71,15 +71,15 @@ const Upload: React.FC = () => {
     
     try {
       const formData = new FormData();
-      formData.append('arquivo', file);
+      formData.append('file', file);
       
       toast({
         title: "Processando arquivo...",
         description: "A IA está analisando o documento. Isso pode levar alguns minutos.",
       });
       
-      // Call Supabase Edge Function to process PDF
-      const response = await fetch('/api/processar-unidades', {
+      // Send PDF to n8n webhook
+      const response = await fetch('https://n8n.condoconta.info/webhook-test/ae251a37-705f-4fc1-8dd1-5f49c78b422d', {
         method: 'POST',
         body: formData,
       });
@@ -92,11 +92,11 @@ const Upload: React.FC = () => {
       
       toast({
         title: "Arquivo processado com sucesso",
-        description: `${data.unidades.length} unidades encontradas`,
+        description: `${data.unidades?.length || 'Dados'} encontrados`,
       });
       
       // Navigate to review page with data
-      navigate('/revisar', { state: { unitsData: data.unidades } });
+      navigate('/revisar', { state: { unitsData: data.unidades || data } });
       
     } catch (error) {
       console.error('Erro ao processar arquivo:', error);
@@ -106,7 +106,7 @@ const Upload: React.FC = () => {
       
       toast({
         title: "Usando dados de demonstração",
-        description: "Erro na conexão com o backend. Mostrando dados de exemplo.",
+        description: "Erro na conexão com o n8n. Mostrando dados de exemplo.",
         variant: "destructive",
       });
       
