@@ -7,11 +7,13 @@ export interface UnitData {
   id: string;
   Unidade: string;
   Bloco: string;
+  Tipo: string;
+  Perfil: string;
   Nome: string;
-  'CPF/CNPJ': string;
+  CPF_CNPJ: string;
   Celular: string;
-  Telefone: string;
-  'E-mail': string;
+  Telefone_fixo: string;
+  Email: string;
 }
 
 interface UnitsTableProps {
@@ -26,8 +28,8 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
   const pageSize = 20;
 
   const getRowStatus = (unit: UnitData) => {
-    const hasRequired = unit.Unidade && unit.Nome && unit['CPF/CNPJ'];
-    const hasContact = unit.Celular && unit['E-mail'];
+    const hasRequired = unit.Unidade && unit.Nome && unit.CPF_CNPJ;
+    const hasContact = unit.Celular && unit.Email;
     
     if (!hasRequired) return 'critical';
     if (!hasContact) return 'incomplete';
@@ -119,7 +121,13 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                   Celular
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Telefone
+                  Tipo
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Perfil
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Telefone Fixo
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   E-mail
@@ -176,12 +184,12 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {isEditing ? (
                         <Input
-                          value={rowData['CPF/CNPJ']}
-                          onChange={(e) => handleInputChange('CPF/CNPJ', e.target.value)}
+                          value={rowData.CPF_CNPJ}
+                          onChange={(e) => handleInputChange('CPF_CNPJ', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit['CPF/CNPJ']}</span>
+                        <span className="text-sm text-foreground">{unit.CPF_CNPJ}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -198,23 +206,45 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {isEditing ? (
                         <Input
-                          value={rowData.Telefone}
-                          onChange={(e) => handleInputChange('Telefone', e.target.value)}
+                          value={rowData.Tipo}
+                          onChange={(e) => handleInputChange('Tipo', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Telefone}</span>
+                        <span className="text-sm text-foreground">{unit.Tipo}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Perfil}
+                          onChange={(e) => handleInputChange('Perfil', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Perfil}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Telefone_fixo}
+                          onChange={(e) => handleInputChange('Telefone_fixo', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Telefone_fixo}</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
                       {isEditing ? (
                         <Input
-                          value={rowData['E-mail']}
-                          onChange={(e) => handleInputChange('E-mail', e.target.value)}
+                          value={rowData.Email}
+                          onChange={(e) => handleInputChange('Email', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit['E-mail']}</span>
+                        <span className="text-sm text-foreground">{unit.Email}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

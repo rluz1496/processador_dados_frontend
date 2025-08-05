@@ -2,7 +2,7 @@ import { UnitData } from '@/components/UnitsTable';
 
 export const generateCSV = (data: UnitData[]): string => {
   // Headers do CSV
-  const headers = ['Unidade', 'Bloco', 'Nome', 'CPF/CNPJ', 'Celular', 'Telefone', 'E-mail'];
+  const headers = ['Unidade', 'Bloco', 'Tipo', 'Perfil', 'Nome', 'CPF/CNPJ', 'Celular', 'Telefone_fixo', 'Email'];
   
   // Criar linhas do CSV
   const csvRows = [
@@ -10,11 +10,13 @@ export const generateCSV = (data: UnitData[]): string => {
     ...data.map(unit => [
       unit.Unidade || '',
       unit.Bloco || '',
+      unit.Tipo || '',
+      unit.Perfil || '',
       unit.Nome || '',
-      unit['CPF/CNPJ'] || '',
+      unit.CPF_CNPJ || '',
       unit.Celular || '',
-      unit.Telefone || '',
-      unit['E-mail'] || ''
+      unit.Telefone_fixo || '',
+      unit.Email || ''
     ].map(field => `"${field}"`).join(',')) // Escapar campos com aspas
   ];
   

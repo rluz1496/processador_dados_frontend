@@ -19,51 +19,61 @@ const Upload: React.FC = () => {
         id: '1',
         Unidade: '101',
         Bloco: 'A',
+        Tipo: 'Apto',
+        Perfil: 'Proprietário',
         Nome: 'João Silva Santos',
-        'CPF/CNPJ': '123.456.789-00',
+        CPF_CNPJ: '123.456.789-00',
         Celular: '(11) 99999-1111',
-        Telefone: '(11) 3333-1111',
-        'E-mail': 'joao.silva@email.com'
+        Telefone_fixo: '(11) 3333-1111',
+        Email: 'joao.silva@email.com'
       },
       {
         id: '2',
         Unidade: '102',
         Bloco: 'A',
+        Tipo: 'Apto',
+        Perfil: 'Proprietário',
         Nome: 'Maria Oliveira',
-        'CPF/CNPJ': '987.654.321-00',
+        CPF_CNPJ: '987.654.321-00',
         Celular: '',
-        Telefone: '(11) 3333-2222',
-        'E-mail': 'maria.oliveira@email.com'
+        Telefone_fixo: '(11) 3333-2222',
+        Email: 'maria.oliveira@email.com'
       },
       {
         id: '3',
         Unidade: '103',
         Bloco: 'A',
+        Tipo: 'Apto',
+        Perfil: 'Proprietário',
         Nome: 'Pedro Costa',
-        'CPF/CNPJ': '',
+        CPF_CNPJ: '',
         Celular: '(11) 99999-3333',
-        Telefone: '',
-        'E-mail': ''
+        Telefone_fixo: '',
+        Email: ''
       },
       {
         id: '4',
         Unidade: '201',
         Bloco: 'B',
+        Tipo: 'Apto',
+        Perfil: 'Proprietário',
         Nome: 'Ana Rodrigues Lima',
-        'CPF/CNPJ': '555.666.777-88',
+        CPF_CNPJ: '555.666.777-88',
         Celular: '(11) 99999-4444',
-        Telefone: '(11) 3333-4444',
-        'E-mail': 'ana.rodrigues@email.com'
+        Telefone_fixo: '(11) 3333-4444',
+        Email: 'ana.rodrigues@email.com'
       },
       {
         id: '5',
         Unidade: '202',
         Bloco: 'B',
+        Tipo: 'Garagem',
+        Perfil: 'Proprietário',
         Nome: 'Carlos Mendes',
-        'CPF/CNPJ': '111.222.333-44',
+        CPF_CNPJ: '111.222.333-44',
         Celular: '(11) 99999-5555',
-        Telefone: '',
-        'E-mail': ''
+        Telefone_fixo: '',
+        Email: ''
       }
     ];
   };
@@ -74,10 +84,10 @@ const Upload: React.FC = () => {
     
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('arquivo', file);
       
-      // Send PDF to n8n webhook
-      const response = await fetch('https://n8n-webhook.condoconta.com.br/webhook/ae251a37-705f-4fc1-8dd1-5f49c78b422d', {
+      // Send PDF to API
+      const response = await fetch('/processar-pdf', {
         method: 'POST',
         body: formData,
       });
@@ -88,13 +98,19 @@ const Upload: React.FC = () => {
       
       const data = await response.json();
       
+      // Adicionar IDs únicos aos dados retornados da API
+      const unitsWithIds = data.unidades?.map((unit: any, index: number) => ({
+        ...unit,
+        id: `${index + 1}`
+      })) || [];
+      
       toast({
         title: "Arquivo processado com sucesso",
-        description: `${data.unidades?.length || 'Dados'} encontrados`,
+        description: `${data.total || unitsWithIds.length} unidades encontradas`,
       });
       
       // Navigate to review page with data
-      navigate('/revisar', { state: { unitsData: data.unidades || data } });
+      navigate('/revisar', { state: { unitsData: unitsWithIds } });
       
     } catch (error) {
       console.error('Erro ao processar arquivo:', error);
