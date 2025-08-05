@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FileUpload from '@/components/FileUpload';
+import ProcessingAnimation from '@/components/ProcessingAnimation';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { UnitData } from '@/components/UnitsTable';
 
 const Upload: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -68,18 +70,14 @@ const Upload: React.FC = () => {
 
   const handleFileSelect = async (file: File) => {
     setIsLoading(true);
+    setIsProcessing(true);
     
     try {
       const formData = new FormData();
       formData.append('file', file);
       
-      toast({
-        title: "Processando arquivo...",
-        description: "A IA está analisando o documento. Isso pode levar alguns minutos.",
-      });
-      
       // Send PDF to n8n webhook
-      const response = await fetch('n8n-webhook.condoconta.com.br/webhook/ae251a37-705f-4fc1-8dd1-5f49c78b422d', {
+      const response = await fetch('https://n8n.condoconta.info/webhook-test/ae251a37-705f-4fc1-8dd1-5f49c78b422d', {
         method: 'POST',
         body: formData,
       });
@@ -113,12 +111,15 @@ const Upload: React.FC = () => {
       navigate('/revisar', { state: { unitsData: mockData } });
     } finally {
       setIsLoading(false);
+      setIsProcessing(false);
     }
   };
 
   return (
-    <div className="p-6">
-      <div className="max-w-4xl mx-auto">
+    <>
+      <ProcessingAnimation isVisible={isProcessing} />
+      <div className="p-6">
+        <div className="max-w-4xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-xl mb-6">
@@ -199,6 +200,7 @@ const Upload: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
