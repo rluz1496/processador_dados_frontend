@@ -23,13 +23,28 @@ const Review: React.FC = () => {
     }
   }, [location.state, navigate]);
 
+  const isEmpty = (value: any) => {
+    return (
+      value === undefined ||
+      value === null ||
+      (typeof value === 'string' && value.trim().toLowerCase() === 'n/a') ||
+      value === ''
+    );
+  };
+  
   const getStatusCounts = () => {
     const counts = { complete: 0, incomplete: 0, critical: 0 };
-    
+  
     unitsData.forEach(unit => {
-      const hasRequired = unit.Unidade && unit.Nome && unit['CPF/CNPJ'];
-      const hasContact = unit.Celular && unit['E-mail'];
-      
+      const hasRequired =
+        !isEmpty(unit.Unidade) &&
+        !isEmpty(unit.Nome) &&
+        !isEmpty(unit['CPF_CNPJ']);
+  
+      const hasContact =
+        !isEmpty(unit.Celular) &&
+        !isEmpty(unit.Email || unit['Email']);
+  
       if (!hasRequired) {
         counts.critical++;
       } else if (!hasContact) {
@@ -38,10 +53,10 @@ const Review: React.FC = () => {
         counts.complete++;
       }
     });
-    
+  
     return counts;
   };
-
+  
   const handleRegisterUnits = async () => {
     setIsLoading(true);
     

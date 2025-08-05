@@ -118,13 +118,13 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                   CPF/CNPJ
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Celular
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Tipo
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Perfil
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Celular
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Telefone Fixo

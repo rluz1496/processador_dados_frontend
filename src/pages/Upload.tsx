@@ -87,7 +87,7 @@ const Upload: React.FC = () => {
       formData.append('arquivo', file);
       
       // Send PDF to API
-      const response = await fetch('/processar-pdf', {
+      const response = await fetch('http://localhost:8000/processar-pdf', {
         method: 'POST',
         body: formData,
       });
@@ -120,7 +120,7 @@ const Upload: React.FC = () => {
       
       toast({
         title: "Usando dados de demonstração",
-        description: "Erro na conexão com o n8n. Mostrando dados de exemplo.",
+        description: "Erro na conexão. Mostrando dados de exemplo.",
         variant: "destructive",
       });
       
