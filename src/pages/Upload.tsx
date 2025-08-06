@@ -87,7 +87,7 @@ const Upload: React.FC = () => {
       formData.append('arquivo', file);
       
       // Send PDF to API
-      const response = await fetch('processadordadosbackend-production.up.railway.app/processar-pdf', {
+      const response = await fetch('http://processadordadosbackend-production.up.railway.app/processar-pdf', {
         method: 'POST',
         body: formData,
       });
