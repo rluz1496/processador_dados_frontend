@@ -211,7 +211,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Peril}</span>
+                        <span className="text-sm text-foreground">{unit.Perfil}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
