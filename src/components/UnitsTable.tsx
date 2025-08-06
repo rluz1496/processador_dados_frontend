@@ -195,23 +195,23 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {isEditing ? (
                         <Input
-                          value={rowData.Celular}
+                          value={rowData.Tipo}
                           onChange={(e) => handleInputChange('Celular', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Celular}</span>
+                        <span className="text-sm text-foreground">{unit.Tipo}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {isEditing ? (
                         <Input
-                          value={rowData.Tipo}
+                          value={rowData.Celular}
                           onChange={(e) => handleInputChange('Tipo', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Tipo}</span>
+                        <span className="text-sm text-foreground">{unit.Celular}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
