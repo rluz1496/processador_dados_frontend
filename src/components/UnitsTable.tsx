@@ -196,22 +196,11 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                       {isEditing ? (
                         <Input
                           value={rowData.Tipo}
-                          onChange={(e) => handleInputChange('Celular', e.target.value)}
-                          className="w-full"
-                        />
-                      ) : (
-                        <span className="text-sm text-foreground">{unit.Tipo}</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {isEditing ? (
-                        <Input
-                          value={rowData.Celular}
                           onChange={(e) => handleInputChange('Tipo', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Celular}</span>
+                        <span className="text-sm text-foreground">{unit.Tipo}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -222,7 +211,18 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Perfil}</span>
+                        <span className="text-sm text-foreground">{unit.Peril}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Celular}
+                          onChange={(e) => handleInputChange('Celular', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Celular}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
