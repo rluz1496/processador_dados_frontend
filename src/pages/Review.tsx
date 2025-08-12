@@ -38,12 +38,12 @@ const Review: React.FC = () => {
     unitsData.forEach(unit => {
       const hasRequired =
         !isEmpty(unit.Unidade) &&
-        !isEmpty(unit.Nome) &&
-        !isEmpty(unit['CPF_CNPJ']);
+        !isEmpty(unit.Proprietario_Nome) &&
+        !isEmpty(unit.Proprietario_CPF_CNPJ);
   
       const hasContact =
-        !isEmpty(unit.Celular) &&
-        !isEmpty(unit.Email || unit['Email']);
+        !isEmpty(unit.Proprietario_Celular) &&
+        !isEmpty(unit.Proprietario_Email);
   
       if (!hasRequired) {
         counts.critical++;
@@ -184,19 +184,19 @@ const Review: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-success"></div>
                 <span className="text-muted-foreground">
-                  <strong className="text-foreground">Completas:</strong> Todos os campos obrigatórios
+                  <strong className="text-foreground">Completas:</strong> Dados obrigatórios do proprietário
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-warning"></div>
                 <span className="text-muted-foreground">
-                  <strong className="text-foreground">Incompletas:</strong> Faltam contatos (celular/email)
+                  <strong className="text-foreground">Incompletas:</strong> Faltam contatos do proprietário
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-destructive"></div>
                 <span className="text-muted-foreground">
-                  <strong className="text-foreground">Críticas:</strong> Faltam dados obrigatórios
+                  <strong className="text-foreground">Críticas:</strong> Faltam dados essenciais
                 </span>
               </div>
             </div>
