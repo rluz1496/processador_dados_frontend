@@ -33,8 +33,8 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
   const pageSize = 20;
 
   const getRowStatus = (unit: UnitData) => {
-    const hasRequired = unit.Unidade && (unit.Proprietario_Nome || unit.Responsavel_Nome) && (unit.Proprietario_CPF_CNPJ || unit.Responsavel_CPF_CNPJ);
-    const hasContact = (unit.Proprietario_Celular || unit.Responsavel_Celular) && (unit.Proprietario_Email || unit.Responsavel_Email);
+    const hasRequired = unit.Unidade && unit.Proprietario_Nome && unit.Proprietario_CPF_CNPJ;
+    const hasContact = unit.Proprietario_Celular && unit.Proprietario_Email;
     
     if (!hasRequired) return 'critical';
     if (!hasContact) return 'incomplete';
@@ -122,41 +122,36 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Perfil
                 </th>
-
-                {/* Proprietário */}
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Proprietário - Nome
+                  Proprietário
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Proprietário - CPF/CNPJ
+                  CPF/CNPJ Prop.
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Proprietário - Celular
+                  Celular Prop.
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Proprietário - Telefone Fixo
+                  Tel. Fixo Prop.
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Proprietário - E-mail
-                </th>
-
-                {/* Responsável */}
-                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Responsável - Nome
+                  E-mail Prop.
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Responsável - CPF/CNPJ
+                  Responsável
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Responsável - Celular
+                  CPF/CNPJ Resp.
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Responsável - Telefone Fixo
+                  Celular Resp.
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Responsável - E-mail
+                  Tel. Fixo Resp.
                 </th>
-
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  E-mail Resp.
+                </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Ações
                 </th>
@@ -217,8 +212,6 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                         <span className="text-sm text-foreground">{unit.Perfil}</span>
                       )}
                     </td>
-
-                    {/* Proprietário */}
                     <td className="px-6 py-4">
                       {isEditing ? (
                         <Input
@@ -274,8 +267,6 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                         <span className="text-sm text-foreground">{unit.Proprietario_Email}</span>
                       )}
                     </td>
-
-                    {/* Responsável */}
                     <td className="px-6 py-4">
                       {isEditing ? (
                         <Input
@@ -331,7 +322,6 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                         <span className="text-sm text-foreground">{unit.Responsavel_Email}</span>
                       )}
                     </td>
-
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       {isEditing ? (
                         <div className="flex space-x-2">
