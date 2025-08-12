@@ -9,11 +9,16 @@ export interface UnitData {
   Bloco: string;
   Tipo: string;
   Perfil: string;
-  Nome: string;
-  CPF_CNPJ: string;
-  Celular: string;
-  Telefone_fixo: string;
-  Email: string;
+  Proprietario_Nome: string;
+  Proprietario_CPF_CNPJ: string;
+  Proprietario_Celular: string;
+  Proprietario_Telefone_fixo: string;
+  Proprietario_Email: string;
+  Responsavel_Nome: string;
+  Responsavel_CPF_CNPJ: string;
+  Responsavel_Celular: string;
+  Responsavel_Telefone_fixo: string;
+  Responsavel_Email: string;
 }
 
 interface UnitsTableProps {
@@ -28,8 +33,8 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
   const pageSize = 20;
 
   const getRowStatus = (unit: UnitData) => {
-    const hasRequired = unit.Unidade && unit.Nome && unit.CPF_CNPJ;
-    const hasContact = unit.Celular && unit.Email;
+    const hasRequired = unit.Unidade && (unit.Proprietario_Nome || unit.Responsavel_Nome) && (unit.Proprietario_CPF_CNPJ || unit.Responsavel_CPF_CNPJ);
+    const hasContact = (unit.Proprietario_Celular || unit.Responsavel_Celular) && (unit.Proprietario_Email || unit.Responsavel_Email);
     
     if (!hasRequired) return 'critical';
     if (!hasContact) return 'incomplete';
@@ -112,26 +117,46 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                   Bloco
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Nome
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  CPF/CNPJ
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Tipo
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Perfil
                 </th>
+
+                {/* Proprietário */}
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Celular
+                  Proprietário - Nome
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  Telefone Fixo
+                  Proprietário - CPF/CNPJ
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
-                  E-mail
+                  Proprietário - Celular
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Proprietário - Telefone Fixo
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Proprietário - E-mail
+                </th>
+
+                {/* Responsável */}
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Responsável - Nome
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Responsável - CPF/CNPJ
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Responsável - Celular
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Responsável - Telefone Fixo
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
+                  Responsável - E-mail
+                </th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-primary-foreground uppercase tracking-wider">
                   Ações
                 </th>
@@ -170,28 +195,6 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                         <span className="text-sm text-foreground">{unit.Bloco}</span>
                       )}
                     </td>
-                    <td className="px-6 py-4">
-                      {isEditing ? (
-                        <Input
-                          value={rowData.Nome}
-                          onChange={(e) => handleInputChange('Nome', e.target.value)}
-                          className="w-full"
-                        />
-                      ) : (
-                        <span className="text-sm text-foreground">{unit.Nome}</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {isEditing ? (
-                        <Input
-                          value={rowData.CPF_CNPJ}
-                          onChange={(e) => handleInputChange('CPF_CNPJ', e.target.value)}
-                          className="w-full"
-                        />
-                      ) : (
-                        <span className="text-sm text-foreground">{unit.CPF_CNPJ}</span>
-                      )}
-                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {isEditing ? (
                         <Input
@@ -214,39 +217,121 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
                         <span className="text-sm text-foreground">{unit.Perfil}</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+
+                    {/* Proprietário */}
+                    <td className="px-6 py-4">
                       {isEditing ? (
                         <Input
-                          value={rowData.Celular}
-                          onChange={(e) => handleInputChange('Celular', e.target.value)}
+                          value={rowData.Proprietario_Nome}
+                          onChange={(e) => handleInputChange('Proprietario_Nome', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Celular}</span>
+                        <span className="text-sm text-foreground">{unit.Proprietario_Nome}</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {isEditing ? (
                         <Input
-                          value={rowData.Telefone_fixo}
-                          onChange={(e) => handleInputChange('Telefone_fixo', e.target.value)}
+                          value={rowData.Proprietario_CPF_CNPJ}
+                          onChange={(e) => handleInputChange('Proprietario_CPF_CNPJ', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Telefone_fixo}</span>
+                        <span className="text-sm text-foreground">{unit.Proprietario_CPF_CNPJ}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Proprietario_Celular}
+                          onChange={(e) => handleInputChange('Proprietario_Celular', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Proprietario_Celular}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Proprietario_Telefone_fixo}
+                          onChange={(e) => handleInputChange('Proprietario_Telefone_fixo', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Proprietario_Telefone_fixo}</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
                       {isEditing ? (
                         <Input
-                          value={rowData.Email}
-                          onChange={(e) => handleInputChange('Email', e.target.value)}
+                          value={rowData.Proprietario_Email}
+                          onChange={(e) => handleInputChange('Proprietario_Email', e.target.value)}
                           className="w-full"
                         />
                       ) : (
-                        <span className="text-sm text-foreground">{unit.Email}</span>
+                        <span className="text-sm text-foreground">{unit.Proprietario_Email}</span>
                       )}
                     </td>
+
+                    {/* Responsável */}
+                    <td className="px-6 py-4">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Responsavel_Nome}
+                          onChange={(e) => handleInputChange('Responsavel_Nome', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Responsavel_Nome}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Responsavel_CPF_CNPJ}
+                          onChange={(e) => handleInputChange('Responsavel_CPF_CNPJ', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Responsavel_CPF_CNPJ}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Responsavel_Celular}
+                          onChange={(e) => handleInputChange('Responsavel_Celular', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Responsavel_Celular}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Responsavel_Telefone_fixo}
+                          onChange={(e) => handleInputChange('Responsavel_Telefone_fixo', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Responsavel_Telefone_fixo}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      {isEditing ? (
+                        <Input
+                          value={rowData.Responsavel_Email}
+                          onChange={(e) => handleInputChange('Responsavel_Email', e.target.value)}
+                          className="w-full"
+                        />
+                      ) : (
+                        <span className="text-sm text-foreground">{unit.Responsavel_Email}</span>
+                      )}
+                    </td>
+
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       {isEditing ? (
                         <div className="flex space-x-2">
