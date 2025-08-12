@@ -31,29 +31,44 @@ const Review: React.FC = () => {
       value === ''
     );
   };
+
+  const getContactPercentage = () => {
+    if (unitsData.length === 0) return 0;
+    
+    const unitsWithContact = unitsData.filter(unit => {
+      const hasEmail = !isEmpty(unit.Proprietario_Email);
+      const hasCelular = !isEmpty(unit.Proprietario_Celular);
+      const hasTelefone = !isEmpty(unit.Proprietario_Telefone_fixo);
+      
+      return hasEmail || hasCelular || hasTelefone;
+    });
+    
+    return Math.round((unitsWithContact.length / unitsData.length) * 100);
+  };
   
   const getStatusCounts = () => {
     const counts = { complete: 0, incomplete: 0, critical: 0 };
-  
+
     unitsData.forEach(unit => {
       const hasRequired =
         !isEmpty(unit.Unidade) &&
         !isEmpty(unit.Proprietario_Nome) &&
         !isEmpty(unit.Proprietario_CPF_CNPJ);
-  
-      const hasContact =
-        !isEmpty(unit.Proprietario_Celular) &&
-        !isEmpty(unit.Proprietario_Email);
-  
+
+      const hasEmail = !isEmpty(unit.Proprietario_Email);
+      const hasCelular = !isEmpty(unit.Proprietario_Celular);
+      const hasTelefone = !isEmpty(unit.Proprietario_Telefone_fixo);
+      const hasAnyContact = hasEmail || hasCelular || hasTelefone;
+
       if (!hasRequired) {
         counts.critical++;
-      } else if (!hasContact) {
-        counts.incomplete++;
+      } else if (!hasAnyContact) {
+        counts.incomplete++; // Amarelo: sem nenhum contato
       } else {
-        counts.complete++;
+        counts.complete++; // Verde: tem pelo menos um contato
       }
     });
-  
+
     return counts;
   };
   
@@ -108,7 +123,9 @@ const Review: React.FC = () => {
   };
 
   const statusCounts = getStatusCounts();
+  const contactPercentage = getContactPercentage();
   const hasCriticalIssues = statusCounts.critical > 0;
+  const canProceedWithRegistration = contactPercentage >= 90;
 
   return (
     <div className="p-6">
@@ -140,7 +157,7 @@ const Review: React.FC = () => {
           </div>
 
           {/* Status Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-card border border-border rounded-lg p-6 flex items-center space-x-4">
               <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
                 <CheckCircle className="h-6 w-6 text-success" />
@@ -157,7 +174,7 @@ const Review: React.FC = () => {
               </div>
               <div>
                 <p className="text-2xl font-bold text-warning">{statusCounts.incomplete}</p>
-                <p className="text-sm text-muted-foreground">Dados Incompletos</p>
+                <p className="text-sm text-muted-foreground">Sem Contato</p>
               </div>
             </div>
             
@@ -168,6 +185,29 @@ const Review: React.FC = () => {
               <div>
                 <p className="text-2xl font-bold text-destructive">{statusCounts.critical}</p>
                 <p className="text-sm text-muted-foreground">Dados Críticos</p>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-6 flex items-center space-x-4">
+              <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                contactPercentage >= 90 ? 'bg-success/10' : 'bg-destructive/10'
+              }`}>
+                {contactPercentage >= 90 ? (
+                  <CheckCircle className="h-6 w-6 text-success" />
+                ) : (
+                  <XCircle className="h-6 w-6 text-destructive" />
+                )}
+              </div>
+              <div>
+                <p className={`text-2xl font-bold ${
+                  contactPercentage >= 90 ? 'text-success' : 'text-destructive'
+                }`}>
+                  {contactPercentage}%
+                </p>
+                <p className="text-sm text-muted-foreground">Com Contato</p>
+                <p className="text-xs text-muted-foreground">
+                  {contactPercentage >= 90 ? 'Aprovado' : 'Mín. 90%'}
+                </p>
               </div>
             </div>
           </div>
@@ -184,13 +224,13 @@ const Review: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-success"></div>
                 <span className="text-muted-foreground">
-                  <strong className="text-foreground">Completas:</strong> Dados obrigatórios do proprietário
+                  <strong className="text-foreground">Completas:</strong> Dados obrigatórios + contato
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-warning"></div>
                 <span className="text-muted-foreground">
-                  <strong className="text-foreground">Incompletas:</strong> Faltam contatos do proprietário
+                  <strong className="text-foreground">Sem Contato:</strong> Sem email, celular ou telefone
                 </span>
               </div>
               <div className="flex items-center space-x-2">
@@ -218,6 +258,15 @@ const Review: React.FC = () => {
               </span>
             </div>
           )}
+
+          {!canProceedWithRegistration && !hasCriticalIssues && (
+            <div className="flex items-center space-x-2 text-destructive bg-destructive/10 px-4 py-2 rounded-lg border border-destructive/20">
+              <XCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">
+                Pelo menos 90% das unidades devem ter contato (email, celular ou telefone)
+              </span>
+            </div>
+          )}
           
           <div className="flex space-x-4">
             <Button 
@@ -230,7 +279,7 @@ const Review: React.FC = () => {
             
             <Button 
               onClick={handleRegisterUnits}
-              disabled={isLoading || unitsData.length === 0 || hasCriticalIssues}
+              disabled={isLoading || unitsData.length === 0 || hasCriticalIssues || !canProceedWithRegistration}
               className="px-8 bg-primary hover:bg-primary/90"
             >
               {isLoading ? (
