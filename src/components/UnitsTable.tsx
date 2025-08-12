@@ -32,13 +32,26 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ data, onDataChange }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 20;
 
+  const isEmpty = (value: any) => {
+    return (
+      value === undefined ||
+      value === null ||
+      (typeof value === 'string' && value.trim().toLowerCase() === 'n/a') ||
+      value === ''
+    );
+  };
+
   const getRowStatus = (unit: UnitData) => {
     const hasRequired = unit.Unidade && unit.Proprietario_Nome && unit.Proprietario_CPF_CNPJ;
-    const hasContact = unit.Proprietario_Celular && unit.Proprietario_Email;
+    
+    const hasEmail = !isEmpty(unit.Proprietario_Email);
+    const hasCelular = !isEmpty(unit.Proprietario_Celular);
+    const hasTelefone = !isEmpty(unit.Proprietario_Telefone_fixo);
+    const hasAnyContact = hasEmail || hasCelular || hasTelefone;
     
     if (!hasRequired) return 'critical';
-    if (!hasContact) return 'incomplete';
-    return 'complete';
+    if (!hasAnyContact) return 'incomplete'; // Amarelo: sem nenhum contato
+    return 'complete'; // Verde: tem pelo menos um contato
   };
 
   const getStatusIcon = (status: string) => {
