@@ -2,7 +2,22 @@ import { UnitData } from '@/components/UnitsTable';
 
 export const generateCSV = (data: UnitData[]): string => {
   // Headers do CSV
-  const headers = ['Unidade', 'Bloco', 'Tipo', 'Perfil', 'Nome', 'CPF/CNPJ', 'Celular', 'Telefone_fixo', 'Email'];
+  const headers = [
+    'Unidade', 
+    'Bloco', 
+    'Tipo', 
+    'Perfil', 
+    'Proprietario_Nome', 
+    'Proprietario_CPF_CNPJ', 
+    'Proprietario_Celular', 
+    'Proprietario_Telefone_fixo', 
+    'Proprietario_Email',
+    'Responsavel_Nome',
+    'Responsavel_CPF_CNPJ',
+    'Responsavel_Celular',
+    'Responsavel_Telefone_fixo',
+    'Responsavel_Email'
+  ];
   
   // Criar linhas do CSV
   const csvRows = [
@@ -12,11 +27,16 @@ export const generateCSV = (data: UnitData[]): string => {
       unit.Bloco || '',
       unit.Tipo || '',
       unit.Perfil || '',
-      unit.Nome || '',
-      unit.CPF_CNPJ || '',
-      unit.Celular || '',
-      unit.Telefone_fixo || '',
-      unit.Email || ''
+      unit.Proprietario_Nome || '',
+      unit.Proprietario_CPF_CNPJ || '',
+      unit.Proprietario_Celular || '',
+      unit.Proprietario_Telefone_fixo || '',
+      unit.Proprietario_Email || '',
+      unit.Responsavel_Nome || '',
+      unit.Responsavel_CPF_CNPJ || '',
+      unit.Responsavel_Celular || '',
+      unit.Responsavel_Telefone_fixo || '',
+      unit.Responsavel_Email || ''
     ].map(field => `"${field}"`).join(',')) // Escapar campos com aspas
   ];
   
