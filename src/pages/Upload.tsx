@@ -87,7 +87,7 @@ const Upload: React.FC = () => {
       formData.append('arquivo', file);
       
       // Send PDF to API
-      const response = await fetch('https://n8n.condoconta.info/webhook-test/74c96cb2-c21f-498e-b711-43f19775491a', {
+      const response = await fetch('https://n8n-webhook.condoconta.com.br/webhook/74c96cb2-c21f-498e-b711-43f19775491a', {
         method: 'POST',
         body: formData,
       });
